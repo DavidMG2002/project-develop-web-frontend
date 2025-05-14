@@ -1,22 +1,41 @@
+<!-- Contenedor principal de la página de inicio de sesión -->
 <div class="auth-container">
+
+  <!-- Define una fila principal para dividir la estructura -->
   <div class="row auth-main">
+
+    <!-- Sección de imagen decorativa, visible en pantallas grandes -->
     <div class="col-sm-6 px-0 d-none d-sm-block ml-5">
       <div class="left-img" style="background-image: url();">
+        <!-- Se puede agregar aquí una imagen de fondo para mejorar la estética -->
       </div>
     </div>
+
+    <!-- Sección del formulario de autenticación -->
     <div class="col-sm-6 auth-form-section">
       <div class="form-section">
         <div class="auth-wrapper">
+
+          <!-- Mensaje de bienvenida al gestor de proyectos -->
           <h6 class="welcome-msg"> Bienvenidos al Gestor de proyectos</h6>
+
+          <!-- Espacio para posible integración de inicio de sesión social -->
           <h6 class="social-login-title"></h6>
+
+          <!-- Título principal de la página -->
           <h2 class="login-title">Iniciar sesión</h2>
+
+          <!-- Formulario de validación para el inicio de sesión -->
           <form class="validate-form" [formGroup]="authForm" (ngSubmit)="onSubmit()">
+
+            <!-- Campo de correo electrónico -->
             <div class="row">
               <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-2">
                 <mat-form-field class="example-full-width" appearance="outline">
                   <mat-label>Correo electrónico</mat-label>
                   <input matInput formControlName="username" />
                   <mat-icon matSuffix class="face-icon">face</mat-icon>
+                  <!-- Validación: Muestra error si el campo de correo está vacío -->
                   @if (authForm.get('username')?.hasError('required')) {
                   <mat-error>
                     El correo electrónico es requerido
@@ -25,8 +44,10 @@
                 </mat-form-field>
               </div>
             </div>
+
+            <!-- Campo de contraseña con opción para mostrar/ocultar caracteres -->
             <div class="row">
-              <div class="col-xl-12col-lg-12 col-md-12 col-sm-12 mb-2">
+              <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-2">
                 <mat-form-field class="example-full-width" appearance="outline">
                   <mat-label>Contraseña</mat-label>
                   <input matInput [type]="hide ? 'password' : 'text'" formControlName="password">
@@ -34,6 +55,7 @@
                     [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
                     <mat-icon matSuffix>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
                   </a>
+                  <!-- Validación: Muestra error si el campo de contraseña está vacío -->
                   @if (authForm.get('password')?.hasError('required')) {
                   <mat-error>
                     La contraseña es requerida
@@ -42,17 +64,25 @@
                 </mat-form-field>
               </div>
             </div>
+
+            <!-- Sección para mostrar mensajes de error generales -->
             @if (error) {
             <div class="alert alert-danger mt-3 mb-0">{{error}}</div>
             }
+
+            <!-- Botón de inicio de sesión, deshabilitado si el formulario no es válido -->
             <div class="container-auth-form-btn">
               <div style="text-align:center">
-                <button mat-flat-button color="accent" class="auth-form-btn" [disabled]="!authForm.valid "
+                <button mat-flat-button color="accent" class="auth-form-btn" [disabled]="!authForm.valid"
                   type="submit">Iniciar sesión</button>
               </div>
             </div>
+
           </form>
+
+          <!-- Espacio adicional para futuros logins sociales -->
           <h6 class="social-login-title"></h6>
+
         </div>
       </div>
     </div>

@@ -1,21 +1,23 @@
-import { CommonModule } from '@angular/common';
-import { Component, Inject, inject, OnInit } from '@angular/core';
-import { MatButtonModule } from '@angular/material/button';
-import { MatSelectModule } from '@angular/material/select';
-import { MatIconModule } from '@angular/material/icon';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
-import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { MAT_DIALOG_DATA, MatDialogActions, MatDialogClose, MatDialogContent, MatDialogModule, MatDialogRef, MatDialogTitle } from '@angular/material/dialog';
-import Swal from 'sweetalert2';
-import { UsersService } from 'app/services/users/users.service';
-import { debounceTime, distinctUntilChanged } from 'rxjs';
-import { MatSnackBar } from '@angular/material/snack-bar';
+// Importaciones necesarias para la creación del componente y gestión de formularios.
+import { CommonModule } from '@angular/common'; // Proporciona funciones esenciales para Angular.
+import { Component, Inject, OnInit } from '@angular/core'; // Define el componente y maneja la inyección de dependencias.
+import { MatButtonModule } from '@angular/material/button'; // Botones de Angular Material.
+import { MatSelectModule } from '@angular/material/select'; // Select de Angular Material.
+import { MatIconModule } from '@angular/material/icon'; // Iconos de Angular Material.
+import { MatFormFieldModule } from '@angular/material/form-field'; // Campos de formulario con Material Design.
+import { MatInputModule } from '@angular/material/input'; // Campos de entrada en formularios.
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms'; // Manejo de formularios y validaciones.
+import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog'; // Manejo de diálogos en Angular Material.
+import Swal from 'sweetalert2'; // Biblioteca para mostrar alertas visuales al usuario.
+import { UsersService } from 'app/services/users/users.service'; // Servicio para gestionar usuarios.
+import { debounceTime, distinctUntilChanged } from 'rxjs'; // Operadores para mejorar el rendimiento en validaciones.
+import { MatSnackBar } from '@angular/material/snack-bar'; // Notificaciones emergentes en Angular Material.
 
 @Component({
-  selector: 'app-modal-create-user',
-  standalone: true,
-  imports: [CommonModule,
+  selector: 'app-modal-create-user', // Nombre del componente en HTML.
+  standalone: true, // Indica que el componente no depende de un módulo externo.
+  imports: [ // Módulos utilizados dentro del componente.
+    CommonModule,
     FormsModule,
     MatDialogModule,
     MatButtonModule,
@@ -23,54 +25,52 @@ import { MatSnackBar } from '@angular/material/snack-bar';
     MatIconModule,
     MatFormFieldModule,
     MatInputModule,
-    MatDialogActions,
-    MatDialogClose,
-    MatDialogTitle,
-    MatDialogContent,
     ReactiveFormsModule
   ],
-  templateUrl: './modal-create-user.component.html',
-  styleUrl: './modal-create-user.component.scss'
+  templateUrl: './modal-create-user.component.html', // Archivo que define la estructura visual del componente.
+  styleUrl: './modal-create-user.component.scss' // Archivo que contiene los estilos específicos del componente.
 })
-export class ModalCreateUserComponent implements OnInit {
+export class ModalCreateUserComponent implements OnInit { // Definición del componente.
 
-  formCreateUser!: FormGroup;
-  administratorsValues: any[] = [];
-  showFieldAdministrator: boolean = false;
-  
+  formCreateUser!: FormGroup; // Formulario reactivo para la creación de usuarios.
+  administratorsValues: any[] = []; // Almacena la lista de administradores disponibles.
+  showFieldAdministrator: boolean = false; // Controla la visibilidad del campo de administrador.
+
   constructor(
-    @Inject(MAT_DIALOG_DATA) public data: any,
-    private readonly _formBuilder: FormBuilder,
-    private readonly _userService: UsersService,
-    private readonly dialogRef: MatDialogRef<ModalCreateUserComponent>,
-    private readonly _sanckBar: MatSnackBar,
-  )
-
-  {
-    this.createFormUsers();
+    @Inject(MAT_DIALOG_DATA) public data: any, // Recibe datos del diálogo cuando es abierto.
+    private readonly _formBuilder: FormBuilder, // Servicio para construir formularios reactivos.
+    private readonly _userService: UsersService, // Servicio para gestionar usuarios.
+    private readonly dialogRef: MatDialogRef<ModalCreateUserComponent>, // Referencia al diálogo para cerrarlo.
+    private readonly _sanckBar: MatSnackBar, // Servicio para mostrar notificaciones emergentes.
+  ) {
+    this.createFormUsers(); // Inicializa el formulario.
+    
+    // Agrega una validación para detectar cambios en el campo de confirmación de contraseña.
     this.formCreateUser.controls['confirmPassword'].valueChanges.pipe(
-      debounceTime(1000),
-      distinctUntilChanged()
+      debounceTime(1000), // Espera 1 segundo para evitar validaciones innecesarias en cada pulsación.
+      distinctUntilChanged() // Solo ejecuta la validación si el valor realmente cambia.
     ).subscribe((value) => {
       this.validatePassword(value);
     });
   }
 
   ngOnInit(): void {
-    this.getAllAdministrator();
+    this.getAllAdministrator(); // Obtiene la lista de administradores al inicializar el componente.
   }
   
+  // Configura el formulario con sus validaciones iniciales.
   createFormUsers() {
     this.formCreateUser = this._formBuilder.group({
-      nombre: ['', Validators.required],
-      email: ['', Validators.required],
-      password: ['', Validators.required],
-      confirmPassword: ['', Validators.required],
-      rol_id: ['', Validators.required],
-      administrador_id: [undefined, Validators.required]
+      nombre: ['', Validators.required], // Campo obligatorio.
+      email: ['', Validators.required], // Campo obligatorio.
+      password: ['', Validators.required], // Campo obligatorio.
+      confirmPassword: ['', Validators.required], // Campo obligatorio.
+      rol_id: ['', Validators.required], // Campo obligatorio.
+      administrador_id: [undefined, Validators.required] // Campo obligatorio, se mostrará solo si el rol lo requiere.
     });
   }
 
+  // Obtiene la lista de administradores desde el servicio de usuarios.
   getAllAdministrator() {
     this._userService.getAllAdministrator().subscribe({
       next: (res) => {
@@ -82,6 +82,7 @@ export class ModalCreateUserComponent implements OnInit {
     });
   }
 
+  // Maneja el cambio de rol para mostrar u ocultar el campo de administrador.
   onChangeRole(event: any) {
     if (event.value === '1') {
       this.hideAdministratorField();
@@ -90,8 +91,9 @@ export class ModalCreateUserComponent implements OnInit {
     }
   }
 
+  // Envía el formulario para crear un nuevo usuario.
   onSubmit() {
-    if (this.formCreateUser.invalid) {
+    if (this.formCreateUser.invalid) { // Verifica si el formulario es válido.
       Swal.fire('Error', 'Por favor completa los campos', 'error');
       return;
     }
@@ -117,28 +119,30 @@ export class ModalCreateUserComponent implements OnInit {
     });
   }
 
-  private validatePassword(confirmPassword: string) { //contraseña de confirmacion coincide con la contraseña
+  // Valida que la confirmación de contraseña coincida con la contraseña original.
+  private validatePassword(confirmPassword: string) {
     const password = this.formCreateUser.get('password')?.value;
     if (password !== confirmPassword) {
       this.formCreateUser.get('confirmPassword')?.setErrors({ invalid: true });
     } else {
-      this.formCreateUser.get('confirmPAssword')?.setErrors(null);
+      this.formCreateUser.get('confirmPassword')?.setErrors(null);
     }
-
   }
   
-  private showAdministratorField() { // Cuando el rol es diferente de 1, se muestra el campo de administrador 
+  // Muestra el campo de administrador si el rol no es "1".
+  private showAdministratorField() {
     this.showFieldAdministrator = true;
     this.formCreateUser.get('administrador_id')?.setValidators([Validators.required]);
     this.formCreateUser.get('administrador_id')?.updateValueAndValidity();
   }
 
-  private hideAdministratorField() { // Cuando el rol es 1, no se muestra el campo de administrador // no es requerido
+  // Oculta el campo de administrador si el rol es "1".
+  private hideAdministratorField() {
     this.showFieldAdministrator = false;
     this.formCreateUser.get('administrador_id')?.clearValidators();
     this.formCreateUser.get('administrador_id')?.updateValueAndValidity();
-
   }
 
 }
+
 

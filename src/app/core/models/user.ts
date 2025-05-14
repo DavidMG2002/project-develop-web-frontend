@@ -1,4 +1,4 @@
-export class User {
+export class User {  //  Definición de la clase User, que representa un usuario en la aplicación.
     id!: number;
     username!: string;
     password!: string;

@@ -1,24 +1,39 @@
+<!-- Contenedor principal que envuelve toda la estructura de la página -->
 <div class="auth-container">
+
+  <!-- Define la estructura en forma de fila para organizar los elementos -->
   <div class="row auth-main">
-    
+
+    <!-- Sección principal del formulario de autenticación -->
     <div class="col-sm-12 auth-form-section">
       <div class="form-section">
+
+        <!-- Contenedor que envuelve el formulario de autenticación -->
         <div class="auth-wrapper">
           <form>
+
+            <!-- Muestra el mensaje de error 404 en un tamaño grande -->
             <span class="error-header p-b-45">
               404
             </span>
+
+            <!-- Muestra el mensaje que informa que el usuario no tiene permisos -->
             <span class="error-subheader p-b-5">
               No tienes permiso para ver este módulo
             </span>
+
+            <!-- Mensaje adicional indicando que solo los administradores pueden acceder -->
             <span class="error-subheader2 p-b-5">
               Solo para usuarios con rol de Administrador
             </span>
+
+            <!-- Sección con un botón para regresar a la página de inicio -->
             <div class="container-auth-form-btn mt-5">
-              <button mat-flat-button color color="primary" class="auth-form-btn" type="submit" (click)="redirectHome()">
+              <button mat-flat-button color="primary" class="auth-form-btn" type="submit" (click)="redirectHome()">
                 Volver al inicio
               </button>
             </div>
+
           </form>
         </div>
       </div>

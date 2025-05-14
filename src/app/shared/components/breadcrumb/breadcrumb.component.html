@@ -1,19 +1,35 @@
+<!-- Contenedor principal de la fila -->
 <div class="row">
+  
+  <!-- Contenedor de la barra de navegación -->
   <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+    
+    <!-- Lista de navegación tipo breadcrumb -->
     <ul class="breadcrumb">
+      
+      <!-- Título de la página -->
       <li>
         <h4 class="page-title">{{title}}</h4>
       </li>
+
+      <!-- Primer ítem del breadcrumb: enlace a la página principal del dashboard -->
       <li class="breadcrumb-item bcrumb-1">
         <a [routerLink]="'/dashboard/main'">
-        <!-- <i class="fas fa-home"></i>   -->
-        <i-feather name="home" class="breadcrumb-icon"></i-feather>
-      </a>
-    </li>
-    @for (item of items; track item) {
-      <li class="breadcrumb-item">{{item}}</li>
-    }
-    <li class="breadcrumb-item active">{{active_item}}</li>
-  </ul>
-</div>
+          <!-- Comentado: Icono Font Awesome -->
+          <!-- <i class="fas fa-home"></i>   -->
+          <i-feather name="home" class="breadcrumb-icon"></i-feather> <!-- Icono con Feather Icons -->
+        </a>
+      </li>
+
+      <!-- Iteración sobre la lista de ítems del breadcrumb -->
+      @for (item of items; track item) {
+        <li class="breadcrumb-item">{{item}}</li>
+      }
+
+      <!-- Último ítem activo del breadcrumb -->
+      <li class="breadcrumb-item active">{{active_item}}</li>
+      
+    </ul>
+    
+  </div>
 </div>
