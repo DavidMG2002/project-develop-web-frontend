@@ -12,7 +12,7 @@ describe('ModalEditUsersComponent', () => { // Define el bloque de pruebas para 
   // Configuración inicial antes de ejecutar las pruebas.
   beforeEach(async () => {
     await TestBed.configureTestingModule({ // Configura el entorno de pruebas.
-      imports: [ModalEditUsersComponent] // ⚠️ Posible error: Normalmente se usa "declarations" en lugar de "imports".
+      imports: [ModalEditUsersComponent] //  Posible error: Normalmente se usa "declarations" en lugar de "imports".
     })
     .compileComponents(); // Compila los componentes antes de ejecutar las pruebas.
 

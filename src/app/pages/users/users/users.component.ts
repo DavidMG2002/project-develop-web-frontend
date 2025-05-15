@@ -104,8 +104,11 @@ export class UsersComponent {
     this.handleUserFilterChance('name', 'email');
   }
 
-  createUserFormSearchFilter() {
-
+ createUserFormSearchFilter() {
+    this.userFormSearchFilter = this._formBuilder.group({
+      name: [''],
+      email: ['']
+    });
   }
 
   // Conversor de los roles 1 y 2 a administrador y usuarios
