@@ -3,7 +3,7 @@ import { Route } from "@angular/router";
 
 // Importación de los componentes que serán utilizados en las rutas.
 import { UsersComponent } from "./users/users/users.component"; // Componente para la gestión de usuarios.
-import { ProjectsComponent } from "./projects/projects.component"; // Componente para la gestión de proyectos.
+import { ProjectsComponent  } from "./projects/projects.component"; // Componente para la gestión de proyectos.
 
 // Importación del guard de administrador, que protege el acceso a ciertas rutas.
 import { AdminGuard } from "@core/guard/admin.guard"; 

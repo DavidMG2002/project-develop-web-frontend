@@ -1,0 +1,66 @@
+.assigned-users-section {
+  border-bottom: 1px solid #e0e0e0;
+  padding-bottom: 16px;
+  margin-bottom: 16px;
+  
+  h4 {
+    color: #1976d2;
+    margin-bottom: 12px;
+  }
+}
+
+.available-users-section {
+  h4 {
+    color: #388e3c;
+    margin-bottom: 12px;
+  }
+}
+
+.user-name {
+  font-weight: 500;
+  font-size: 14px;
+}
+
+.project-info {
+  background-color: #f5f5f5;
+  border-left: 4px solid #1976d2;
+  
+  h5 {
+    color: #1976d2;
+    margin-bottom: 8px;
+  }
+  
+  p {
+    margin-bottom: 4px;
+    font-size: 13px;
+  }
+}
+
+mat-list-item {
+  border-bottom: 1px solid #f0f0f0;
+  
+  &:last-child {
+    border-bottom: none;
+  }
+}
+
+.no-data-message {
+  text-align: center;
+  padding: 40px 20px;
+  
+  mat-icon {
+    font-size: 48px;
+    height: 48px;
+    width: 48px;
+    color: #bdbdbd;
+  }
+  
+  p {
+    margin-top: 16px;
+    color: #757575;
+  }
+}
+
+mat-checkbox {
+  margin-right: 12px;
+}

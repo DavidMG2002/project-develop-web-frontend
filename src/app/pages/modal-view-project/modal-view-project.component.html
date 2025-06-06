@@ -1,0 +1,39 @@
+<div class="col-lg-12 col-sm-12">
+  <h2 mat-dialog-title>Detalles del Proyecto</h2>
+  <div mat-dialog-content>
+    <div class="project-details">
+      <div class="row mb-3">
+        <div class="col-md-6">
+          <strong>Nombre:</strong>
+          <p>{{ data?.nombre || 'No disponible' }}</p>
+        </div>
+        <div class="col-md-6">
+          <strong>Administrador:</strong>
+          <p>{{ data?.administrador || 'No asignado' }}</p>
+        </div>
+      </div>
+      
+      <div class="row mb-3">
+        <div class="col-md-6">
+          <strong>Fecha de creación:</strong>
+          <p>{{ data?.fecha_creacion || 'No disponible' }}</p>
+        </div>
+        <div class="col-md-6">
+          <strong>Total de usuarios:</strong>
+          <p>{{ data?.total_usuarios || '0' }}</p>
+        </div>
+      </div>
+      
+      <div class="row mb-3">
+        <div class="col-md-12">
+          <strong>Descripción:</strong>
+          <p>{{ data?.descripcion || 'Sin descripción' }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <mat-dialog-actions align="end">
+    <button mat-button (click)="closeModal()">Cerrar</button>
+  </mat-dialog-actions>
+</div>

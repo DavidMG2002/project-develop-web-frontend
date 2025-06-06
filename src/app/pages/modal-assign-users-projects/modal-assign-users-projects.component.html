@@ -1,1 +1,77 @@
-<p>modal-assign-users-projects works!</p>
+<div class="col-lg-12 col-sm-12">
+  <h2 mat-dialog-title>Asignar Usuarios al Proyecto: {{ projectData?.nombre }}</h2>
+  <div mat-dialog-content>
+    <form [formGroup]="formAssignUsers">
+      
+      <!-- Usuarios ya asignados -->
+      <div class="assigned-users-section mb-4" *ngIf="assignedUsers.length > 0">
+        <h4>Usuarios Asignados</h4>
+        <mat-list>
+          <mat-list-item *ngFor="let user of assignedUsers">
+            <div class="d-flex justify-content-between align-items-center w-100">
+              <div>
+                <span class="user-name">{{ user.nombre }}</span>
+                <small class="text-muted d-block">{{ user.email }}</small>
+              </div>
+              <button 
+                mat-icon-button 
+                color="warn" 
+                matTooltip="Remover usuario"
+                (click)="removeUserAssignment(user.id)">
+                <mat-icon>remove_circle</mat-icon>
+              </button>
+            </div>
+          </mat-list-item>
+        </mat-list>
+      </div>
+
+      <!-- Usuarios disponibles para asignar -->
+      <div class="available-users-section">
+        <h4>Usuarios Disponibles</h4>
+        <div *ngIf="availableUsers.length > 0; else noUsersAvailable">
+          <mat-list>
+            <mat-list-item *ngFor="let user of availableUsers">
+              <div class="d-flex align-items-center w-100">
+                <mat-checkbox
+                  [checked]="isUserSelected(user.id)"
+                  (change)="toggleUserSelection(user, $event.checked)">
+                </mat-checkbox>
+                <div class="ms-3">
+                  <span class="user-name">{{ user.nombre }}</span>
+                  <small class="text-muted d-block">{{ user.email }}</small>
+                  <small class="text-info d-block">{{ user.rol || 'Sin rol' }}</small>
+                </div>
+              </div>
+            </mat-list-item>
+          </mat-list>
+        </div>
+
+        <ng-template #noUsersAvailable>
+          <div class="text-center py-4">
+            <mat-icon class="text-muted" style="font-size: 48px;">group</mat-icon>
+            <p class="text-muted">No hay usuarios disponibles para asignar</p>
+          </div>
+        </ng-template>
+      </div>
+
+      <!-- Información del proyecto -->
+      <div class="project-info mt-4 p-3 bg-light rounded">
+        <h5>Información del Proyecto</h5>
+        <p><strong>Nombre:</strong> {{ projectData?.nombre }}</p>
+        <p><strong>Descripción:</strong> {{ projectData?.descripcion }}</p>
+        <p><strong>Administrador:</strong> {{ projectData?.administrador || 'No asignado' }}</p>
+      </div>
+    </form>
+  </div>
+
+  <mat-dialog-actions align="end">
+    <button mat-button mat-dialog-close>Cancelar</button>
+    <button 
+      mat-button 
+      color="primary"
+      [disabled]="!formAssignUsers.get('selectedUsers')?.value?.length"
+      (click)="onSubmit()">
+      Asignar Usuarios
+    </button>
+  </mat-dialog-actions>
+</div>
