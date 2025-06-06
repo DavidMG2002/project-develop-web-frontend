@@ -1,30 +1,50 @@
+<!-- Contenedor principal con clases de Bootstrap para tamaño responsivo -->
 <div class="col-lg-12 col-sm-12">
+
+  <!-- Título del diálogo para la creación de proyectos -->
   <h2 mat-dialog-title>Creación de proyectos</h2>
+
+  <!-- Contenido del diálogo -->
   <div mat-dialog-content>
+
+    <!-- Formulario de creación del proyecto, vinculado a la propiedad formCreateProject -->
     <form [formGroup]="formCreateProject">
+      
+      <!-- Contenedor para los campos del formulario -->
       <div class="col-lg-12 col-md-12 col-sm-12 custom-margin mt-4">
+        
+        <!-- Primera fila con el campo para el nombre del proyecto -->
         <div class="row">
           <div class="col-lg-6 col-md-6 col-sm-6">
+            <!-- Campo de entrada para el nombre del proyecto -->
             <mat-form-field class="w-100" appearance="outline">
               <mat-label>Nombre del proyecto</mat-label>
               <input matInput formControlName="nombre">
             </mat-form-field>
           </div>
         </div>
+
+        <!-- Segunda fila con el campo para la descripción del proyecto -->
         <div class="row">
           <div class="col-lg-12 col-sm-12">
+            <!-- Campo de texto para la descripción del proyecto -->
             <mat-form-field class="w-100" appearance="outline">
               <mat-label>Descripción</mat-label>
               <textarea matInput formControlName="descripcion" rows="2"></textarea>
             </mat-form-field>
           </div>
         </div>
+
+        <!-- Tercera fila con el selector de administrador opcional -->
         <div class="row">
           <div class="col-lg-6 col-md-6 col-sm-6">
+            <!-- Campo de selección para asignar un administrador al proyecto -->
             <mat-form-field class="w-100" appearance="outline">
               <mat-label>Administrador (opcional)</mat-label>
               <mat-select formControlName="administrador_id">
+                <!-- Opción para no asignar un administrador -->
                 <mat-option [value]="null">Sin administrador</mat-option>
+                <!-- Iteración sobre la lista de administradores disponibles -->
                 <mat-option *ngFor="let administrador_id of administrador_idList" [value]="administrador_id.id">
                   {{ administrador_id.nombre }}
                 </mat-option>
@@ -32,11 +52,17 @@
             </mat-form-field>
           </div>
         </div>
+
       </div>
     </form>
   </div>
+
+  <!-- Sección de acciones del diálogo (botones de cancelar y crear proyecto) -->
   <mat-dialog-actions align="end">
+    <!-- Botón para cerrar el diálogo sin realizar cambios -->
     <button mat-button mat-dialog-close>Cancelar</button>
+
+    <!-- Botón para confirmar la creación del proyecto -->
     <button
       mat-button
       color="primary"
@@ -46,4 +72,6 @@
       Crear
     </button>
   </mat-dialog-actions>
+
 </div>
+

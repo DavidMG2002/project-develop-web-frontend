@@ -1,39 +1,64 @@
+<!-- Contenedor principal del modal con clases de Bootstrap para responsividad -->
 <div class="col-lg-12 col-sm-12">
+
+  <!-- Título del diálogo que muestra "Detalles del Proyecto" -->
   <h2 mat-dialog-title>Detalles del Proyecto</h2>
+
+  <!-- Contenido del diálogo -->
   <div mat-dialog-content>
+
+    <!-- Contenedor de detalles del proyecto -->
     <div class="project-details">
+
+      <!-- Primera fila: Nombre del proyecto y administrador -->
       <div class="row mb-3">
         <div class="col-md-6">
+          <!-- Título del campo -->
           <strong>Nombre:</strong>
+          <!-- Muestra el nombre del proyecto, si está disponible -->
           <p>{{ data?.nombre || 'No disponible' }}</p>
         </div>
         <div class="col-md-6">
+          <!-- Título del campo -->
           <strong>Administrador:</strong>
+          <!-- Muestra el administrador del proyecto, si está asignado -->
           <p>{{ data?.administrador || 'No asignado' }}</p>
         </div>
       </div>
       
+      <!-- Segunda fila: Fecha de creación y número total de usuarios -->
       <div class="row mb-3">
         <div class="col-md-6">
+          <!-- Título del campo -->
           <strong>Fecha de creación:</strong>
+          <!-- Muestra la fecha de creación del proyecto, si está disponible -->
           <p>{{ data?.fecha_creacion || 'No disponible' }}</p>
         </div>
         <div class="col-md-6">
+          <!-- Título del campo -->
           <strong>Total de usuarios:</strong>
+          <!-- Muestra el número total de usuarios asociados al proyecto -->
           <p>{{ data?.total_usuarios || '0' }}</p>
         </div>
       </div>
       
+      <!-- Tercera fila: Descripción del proyecto -->
       <div class="row mb-3">
         <div class="col-md-12">
+          <!-- Título del campo -->
           <strong>Descripción:</strong>
+          <!-- Muestra la descripción del proyecto, si está disponible -->
           <p>{{ data?.descripcion || 'Sin descripción' }}</p>
         </div>
       </div>
+      
     </div>
   </div>
 
+  <!-- Sección de acciones del diálogo -->
   <mat-dialog-actions align="end">
+    <!-- Botón para cerrar el diálogo -->
     <button mat-button (click)="closeModal()">Cerrar</button>
   </mat-dialog-actions>
+
 </div>

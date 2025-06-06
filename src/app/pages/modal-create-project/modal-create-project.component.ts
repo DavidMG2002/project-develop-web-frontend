@@ -1,4 +1,4 @@
-//importa modulos necesarios de angular y librerias externas
+// Importación de módulos de Angular y librerías externas necesarias
 import { Component, OnInit, Inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Validators, ReactiveFormsModule, FormsModule, FormBuilder, FormGroup } from '@angular/forms';
@@ -14,15 +14,16 @@ import { MatDialogTitle } from '@angular/material/dialog';
 import { MatDialogContent } from '@angular/material/dialog';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 
-//importa servicio de proyectos
+// Importación del servicio de proyectos para gestionar operaciones relacionadas
 import { ProjectService } from '../../services/projects/projects.service';
 
-//importa libreria sweetalert para alertas visuales
+// Importación de SweetAlert para mostrar alertas visuales interactivas
 import Swal from 'sweetalert2';
 
+// Declaración del componente Angular
 @Component({
-  selector: 'app-modal-create-project',
-  standalone: true,
+  selector: 'app-modal-create-project', // Identificador del componente
+  standalone: true, // Indica que el componente no depende de un módulo
   imports: [
     CommonModule,
     FormsModule,
@@ -37,30 +38,33 @@ import Swal from 'sweetalert2';
     MatDialogContent,
     ReactiveFormsModule,
   ],
-  templateUrl: './modal-create-project.component.html',
-  styleUrls: ['./modal-create-project.component.scss']
+  templateUrl: './modal-create-project.component.html', // Ruta de la plantilla HTML
+  styleUrls: ['./modal-create-project.component.scss'] // Archivo de estilos del componente
 })
 export class ModalCreateProjectComponent implements OnInit {
-  formCreateProject!: FormGroup;
-  administrador_idList: any[] = []; // <-- Add this
+  formCreateProject!: FormGroup; // Declaración del formulario reactivo
+  administrador_idList: any[] = []; // Lista de administradores disponibles
 
+  // Constructor con inyección de dependencias
   constructor(
-    @Inject(MAT_DIALOG_DATA) public data: any, //datos inyectados al abrir el modal
-    private readonly _formBuilder: FormBuilder, //constructor de formularios
-    private readonly _projectService: ProjectService, //servicio para gestionar proyectos
-    private readonly dialogRef: MatDialogRef<ModalCreateProjectComponent>, //referencia al modal
-    private readonly _snackBar: MatSnackBar, //componente para mostrar mensajes
+    @Inject(MAT_DIALOG_DATA) public data: any, // Datos inyectados al abrir el modal
+    private readonly _formBuilder: FormBuilder, // Constructor de formularios
+    private readonly _projectService: ProjectService, // Servicio para gestión de proyectos
+    private readonly dialogRef: MatDialogRef<ModalCreateProjectComponent>, // Referencia al modal
+    private readonly _snackBar: MatSnackBar, // Servicio para mostrar mensajes emergentes
   ) {}
 
+  // Método que se ejecuta al iniciar el componente
   ngOnInit(): void {
-    this.createFormProject();
-    this.getAllAdministrator(); 
+    this.createFormProject(); // Inicializa el formulario
+    this.getAllAdministrator(); // Obtiene la lista de administradores disponibles
   }
 
+  // Método para obtener la lista de administradores disponibles
   getAllAdministrator() {
     this._projectService.getAllAdministrator().subscribe({
       next: (res) => {
-        // Filter users with administrator role (adjust 'rol_id' as needed)
+        // Filtra los usuarios con rol de administrador
         this.administrador_idList = (res.users || res.data || res).filter((user: any) => user.rol_id === 1);
       },
       error: (err) => {
@@ -69,33 +73,28 @@ export class ModalCreateProjectComponent implements OnInit {
     });
   }
 
+  // Método para crear y configurar el formulario
   createFormProject(): void {
     this.formCreateProject = this._formBuilder.group({
-      // Validaciones comentadas para pruebas
-      nombre: [''], // [Validators.required]
-      descripcion: [''], // [Validators.required]
-      administrador_id: [null] // [Validators.required]
+      nombre: [''], // Campo para el nombre del proyecto
+      descripcion: [''], // Campo para la descripción del proyecto
+      administrador_id: [null] // Campo para el administrador (opcional)
     });
   }
 
+  // Método que se ejecuta al enviar el formulario
   onSubmit() {
-    // Validación comentada para pruebas
-    // if (this.formCreateProject.invalid) {
-    //   Swal.fire('Error', 'Por favor completa todos los campos', 'error');
-    //   return;
-    // }
-
-    //estructura los datos del formulario
+    // Estructura los datos del formulario para enviarlos al backend
     const projectDataInformation = {
       nombre: this.formCreateProject.get('nombre')?.value,
       descripcion: this.formCreateProject.get('descripcion')?.value,
       administrador_id: this.formCreateProject.get('administrador_id')?.value
     };
 
-    //envia los datos al backend para crear el proyecto
+    // Envía los datos al backend para la creación del proyecto
     this._projectService.createProject(projectDataInformation).subscribe({
       next: (response) => {
-        //muestra un mensaje de exito con el nombre del administrador
+        // Muestra un mensaje de éxito con el nombre del administrador asignado
         const admin = this.administrador_idList.find(admin => admin.id === projectDataInformation.administrador_id);
         if (admin) {
           response.message = `Proyecto creado exitosamente para ${admin.nombre}`;
@@ -104,29 +103,30 @@ export class ModalCreateProjectComponent implements OnInit {
         }
         console.log('Datos enviados:', projectDataInformation);
         this._snackBar.open(response.message, 'Cerrar', { duration: 5000 });
-        this.formCreateProject.reset();
-        this.dialogRef.close(true);
+        this.formCreateProject.reset(); // Limpia el formulario
+        this.dialogRef.close(true); // Cierra el modal y devuelve un resultado positivo
       },
       error: (error) => {
-        const errorMessage = error.error?.result || 'Ocurrio un error inesperado. Por favor, intenta nuevamente.';
+        // Muestra un mensaje de error en caso de fallo
+        const errorMessage = error.error?.result || 'Ocurrió un error inesperado. Por favor, intenta nuevamente.';
         this._snackBar.open(errorMessage, 'Cerrar', { duration: 5000 });
       }
     });
   }
 
+  // Método para validar la coherencia de fechas en el formulario
   validateDates() {
-    //valida que la fecha de inicio no sea posterior a la fecha fin
     const fechaInicio = new Date(this.formCreateProject.get('fecha_inicio')?.value);
     const fechaFin = new Date(this.formCreateProject.get('fecha_fin')?.value);
     
     if (fechaInicio && fechaFin && fechaInicio > fechaFin) {
+      // Si la fecha de inicio es posterior a la fecha de fin, se establece un error
       this.formCreateProject.get('fecha_fin')?.setErrors({ invalidDateRange: true });
     } else {
-      // Si no hay error en las fechas, verificamos si hay otros errores
+      // Si no hay error en fechas, verifica otros errores y los limpia si es necesario
       const currentErrors = this.formCreateProject.get('fecha_fin')?.errors;
       if (currentErrors) {
         delete currentErrors['invalidDateRange'];
-        // Si no quedan errores, establecemos null
         this.formCreateProject.get('fecha_fin')?.setErrors(
           Object.keys(currentErrors).length ? currentErrors : null
         );

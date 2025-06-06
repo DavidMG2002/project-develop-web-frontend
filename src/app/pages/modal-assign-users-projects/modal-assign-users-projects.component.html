@@ -1,18 +1,34 @@
+<!-- Contenedor principal con clases de Bootstrap para ajuste de tamaño -->
 <div class="col-lg-12 col-sm-12">
+
+  <!-- Título del diálogo con el nombre del proyecto obtenido de projectData -->
   <h2 mat-dialog-title>Asignar Usuarios al Proyecto: {{ projectData?.nombre }}</h2>
+
+  <!-- Contenido del diálogo -->
   <div mat-dialog-content>
+
+    <!-- Formulario de asignación de usuarios, vinculado a la propiedad formAssignUsers -->
     <form [formGroup]="formAssignUsers">
       
-      <!-- Usuarios ya asignados -->
+      <!-- Sección de usuarios ya asignados al proyecto -->
       <div class="assigned-users-section mb-4" *ngIf="assignedUsers.length > 0">
+        
+        <!-- Título de la sección -->
         <h4>Usuarios Asignados</h4>
+
+        <!-- Lista de usuarios asignados -->
         <mat-list>
           <mat-list-item *ngFor="let user of assignedUsers">
+            <!-- Contenedor con flexbox para distribuir los elementos -->
             <div class="d-flex justify-content-between align-items-center w-100">
+              
+              <!-- Información del usuario (nombre y correo) -->
               <div>
                 <span class="user-name">{{ user.nombre }}</span>
                 <small class="text-muted d-block">{{ user.email }}</small>
               </div>
+
+              <!-- Botón para remover un usuario asignado, ejecuta la función removeUserAssignment -->
               <button 
                 mat-icon-button 
                 color="warn" 
@@ -20,32 +36,47 @@
                 (click)="removeUserAssignment(user.id)">
                 <mat-icon>remove_circle</mat-icon>
               </button>
+
             </div>
           </mat-list-item>
         </mat-list>
       </div>
 
-      <!-- Usuarios disponibles para asignar -->
+      <!-- Sección de usuarios disponibles para asignar -->
       <div class="available-users-section">
+        
+        <!-- Título de la sección -->
         <h4>Usuarios Disponibles</h4>
+
+        <!-- Condicional: si hay usuarios disponibles, muestra la lista; de lo contrario, usa una plantilla alternativa -->
         <div *ngIf="availableUsers.length > 0; else noUsersAvailable">
+          
+          <!-- Lista de usuarios disponibles -->
           <mat-list>
             <mat-list-item *ngFor="let user of availableUsers">
+              
+              <!-- Contenedor con flexbox para distribuir los elementos -->
               <div class="d-flex align-items-center w-100">
+
+                <!-- Checkbox para seleccionar o deseleccionar un usuario, manejado por toggleUserSelection -->
                 <mat-checkbox
                   [checked]="isUserSelected(user.id)"
                   (change)="toggleUserSelection(user, $event.checked)">
                 </mat-checkbox>
+
+                <!-- Información del usuario: nombre, correo y rol -->
                 <div class="ms-3">
                   <span class="user-name">{{ user.nombre }}</span>
                   <small class="text-muted d-block">{{ user.email }}</small>
                   <small class="text-info d-block">{{ user.rol || 'Sin rol' }}</small>
                 </div>
+
               </div>
             </mat-list-item>
           </mat-list>
         </div>
 
+        <!-- Plantilla alternativa cuando no hay usuarios disponibles -->
         <ng-template #noUsersAvailable>
           <div class="text-center py-4">
             <mat-icon class="text-muted" style="font-size: 48px;">group</mat-icon>
@@ -54,16 +85,18 @@
         </ng-template>
       </div>
 
-      <!-- Información del proyecto -->
+      <!-- Sección con la información del proyecto -->
       <div class="project-info mt-4 p-3 bg-light rounded">
         <h5>Información del Proyecto</h5>
         <p><strong>Nombre:</strong> {{ projectData?.nombre }}</p>
         <p><strong>Descripción:</strong> {{ projectData?.descripcion }}</p>
         <p><strong>Administrador:</strong> {{ projectData?.administrador || 'No asignado' }}</p>
       </div>
+
     </form>
   </div>
 
+  <!-- Acciones del diálogo (botones de cancelar y asignar usuarios) -->
   <mat-dialog-actions align="end">
     <button mat-button mat-dialog-close>Cancelar</button>
     <button 
@@ -74,4 +107,5 @@
       Asignar Usuarios
     </button>
   </mat-dialog-actions>
+
 </div>
